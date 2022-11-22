@@ -17,7 +17,7 @@ public class EnvelopeController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost(Name = "envelope")]
+    [HttpPost(Name = "Create")]
     public async Task<ActionResult<EnvelopeModel>> CreateEnvelope([FromBody] CreateEnvelopeModel data)
     {
         EnvelopeModel envelope = await _envelopeService.Create(data);

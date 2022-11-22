@@ -31,7 +31,7 @@ namespace server.Services.AntiCorruption
                 token = Settings.Token,
                 @params = new
                 {
-                    Envelope = new EnvelopeModel
+                    Envelope = new
                     {
                         descricao = data.Descricao,
                         Repositorio = new RepositoryModel
@@ -52,9 +52,11 @@ namespace server.Services.AntiCorruption
                         ConfigAuxiliar = new
                         {
                             documentosComXMLs = "N",
-                            //urlCarimboTempo = null
                         },
-                        listaDocumentos = docs,
+                        listaDocumentos = new
+                        {
+                            Documento = docs
+                        },
                         incluirHashTodasPaginas = "S",
                         permitirDespachos = "S",
                         ignorarNotificacoes = "N",
