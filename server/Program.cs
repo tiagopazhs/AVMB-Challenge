@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IRepositoryService, RepositoryService>();
 builder.Services.AddScoped<IEnvelopeService, EnvelopeService>();
+builder.Services.AddScoped<IFolderService, FolderService>();
 
 var app = builder.Build();
 

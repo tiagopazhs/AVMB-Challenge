@@ -4,8 +4,8 @@ using server.Models;
 
 namespace server.Domain.Interfaces.Service
 {
-    public interface IEnvelopeService
+    public interface IFolderService
     {
-        Task<EnvelopeModel> Create(CreateEnvelopeModel data);
+        Task<FolderModel> Create(string repositoryId, string folderName);
     }
 }
