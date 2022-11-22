@@ -1,6 +1,7 @@
-Documentation: https://localhost:7223/swagger/index.html
+● SWAGGER DOCUMENTATION:
+https://localhost:7223/swagger/index.html
 
-Request example: 
+● REQUEST EXAMPLE TO CREATE AN ENVELOPE:
 
 URL:https://localhost:7223/Envelope
 Type:POST
@@ -19,3 +20,73 @@ Body:{
    ]
 }
 
+● REQUEST EXAMPLE TO ADD SIGNATOR:
+
+URL:https://plataforma.astenassinatura.com.br/api/inserirSignatarioEnvelope
+Type:POST
+
+Body:{
+   "token":"daT1HPI4qXB5QypP2huHk2OOJfr1FyeQ79p1tt3JCiIoH93GbnkwxF6S60yFQoZwYCzUwZVb-Lk9KvOx1EDnvfJJ0ZzxWSDzAxO1g8ZXFbYThkTGc++UtOsCEYM2Yu8liFKaVoM2LTA6WGYkQkwnrk",
+   "params":{
+      "SignatarioEnvelope":{
+         "Envelope":{
+            "id":21186
+         },
+         "ordem": 1,
+         "tagAncoraCampos": null,
+         "ConfigAssinatura":{
+            "emailSignatario":"prova.tecnica@avmb.com.br",
+            "nomeSignatario":"Prova Tecnica",
+            "celularSignatario":null,
+            "opcaoAutenticacao":null,
+            "tipoAssinatura":1,
+            "permitirDelegar":"N",
+            "apenasCelular":"N",
+            "exigirLogin":"N",
+            "exigirCodigo":"N",
+            "exigirDadosIdentif":"N",            
+            "assinaturaPresencial":"N",
+            "nomeSignPresencial":null,
+            "cpfSignPresencial":null,
+            "ignorarRecusa":"N",
+            "codigoExigido":null,
+            "incluirImagensAutentEnvelope":"N",
+            "analisarFaceImagem":"N",
+            "percentualPrecisaoFace":0            
+         }
+      }
+   }
+}
+
+
+● REQUEST EXAMPLE TO FORWARD ENVELOPES FOR SIGNATURE:
+
+URL:https://plataforma.astenassinatura.com.br/api/encaminharEnvelopeParaAssinaturas
+Type:POST
+
+Body:{
+    "token": "daT1HPI4qXB5QypP2huHk2OOJfr1FyeQ79p1tt3JCiIoH93GbnkwxF6S60yFQoZwYCzUwZVb-Lk9KvOx1EDnvfJJ0ZzxWSDzAxO1g8ZXFbYThkTGc++UtOsCEYM2Yu8liFKaVoM2LTA6WGYkQkwnrk",
+    "params": {
+        "Envelope": {
+            "id": 21186
+        },
+        "agendarEnvio": "N",
+        "detectarCampos": "N",
+        "dataEnvioAgendado": null,
+        "horaEnvioAgendado": null
+    }
+}
+
+
+● REQUEST EXAMPLE TO CHECK STATUS:
+
+URL:https://plataforma.astenassinatura.com.br/api/getDadosEnvelope
+Type:POST
+
+Body:{
+   "token":"daT1HPI4qXB5QypP2huHk2OOJfr1FyeQ79p1tt3JCiIoH93GbnkwxF6S60yFQoZwYCzUwZVb-Lk9KvOx1EDnvfJJ0ZzxWSDzAxO1g8ZXFbYThkTGc++UtOsCEYM2Yu8liFKaVoM2LTA6WGYkQkwnrk",
+      "params":{
+      "idEnvelope":21186,
+      "getLobs": "N"
+   }
+}
