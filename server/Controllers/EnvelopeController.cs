@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using server.Domain.Interfaces.Service;
+using server.Models;
 
 namespace server.Controllers;
 
@@ -6,39 +8,25 @@ namespace server.Controllers;
 [Route("[controller]")]
 public class EnvelopeController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private readonly ILogger<EnvelopeController> _logger;
+    public readonly IEnvelopeService _envelopeService;
 
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public EnvelopeController(ILogger<EnvelopeController> logger,IEnvelopeService envelopeService)
     {
+        _envelopeService=envelopeService;
         _logger = logger;
     }
 
-    [HttpGet(Name = "CreateEnvelope")]
-    public IEnumerable<WeatherForecast> CreateEnvelope()
+    [HttpPost(Name = "envelope")]
+    public async Task<ActionResult<EnvelopeModel>> CreateEnvelope()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        EnvelopeModel envelope = await _envelopeService.Create();
+        return envelope;
     }
 
-    [HttpGet(Name = "GetEnvelopeState")]
-    public IEnumerable<WeatherForecast> GetEnvelopeState()
+    /*[HttpGet(Name = "envelopeState")]
+    public IEnumerable<string> GetEnvelopeState()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
-    }
+       return "state";
+    }*/
 }
