@@ -52,6 +52,7 @@ namespace server.Services.AntiCorruption
                         ConfigAuxiliar = new
                         {
                             documentosComXMLs = "N",
+                            urlCarimboTempo = "null"
                         },
                         listaDocumentos = new
                         {
@@ -69,7 +70,7 @@ namespace server.Services.AntiCorruption
             httpRequestMessage.Headers.Add("Accept", "application/json");
             httpRequestMessage.Content = new StringContent(JsonConvert.SerializeObject(body), System.Text.Encoding.UTF8, "application/json");
             httpRequestMessage.Method = HttpMethod.Post;
-            httpRequestMessage.RequestUri = new Uri($"{Settings.SignatureApiUrl}/inserirRepositorio");
+            httpRequestMessage.RequestUri = new Uri($"{Settings.SignatureApiUrl}/inserirEnvelope");
 
             var httpClient = _httpClientFactory.CreateClient();
             httpClient.Timeout = new TimeSpan(0, 2, 0);
