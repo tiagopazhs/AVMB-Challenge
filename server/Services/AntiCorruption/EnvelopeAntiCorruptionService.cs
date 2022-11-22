@@ -1,44 +1,64 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using server.Models;
-using server.Domain.Interfaces.Service;
-
-namespace server.Services
+using server.Models.AntiCorruption;
+using server.Services;
+using server.Domain.Interfaces.Service.AntiCorruption;
+using Newtonsoft.Json;
+namespace server.Services.AntiCorruption
 {
-    public class  EnvelopeService : IEnvelopeService
+    public class EnvelopeAntiCorruptionService : IEnvelopeAntiCorruptionService
     {
-        public readonly IRepositoryService _repositoryService;
-        public readonly IFolderService _folderService;
-
-        public EnvelopeService(IRepositoryService repositoryService,IFolderService folderService){
-            _repositoryService=repositoryService;
-            _folderService=folderService;
-        }
-        public async Task<RepositoryModel> Create(string idUser, string repositoryName)
+        private readonly IHttpClientFactory _httpClientFactory;
+        public EnvelopeAntiCorruptionService(IHttpClientFactory httpClientFactory)
         {
+            _httpClientFactory = httpClientFactory;
+        }
+        public async Task<EnvelopeModel> Create(CreateEnvelopeModel data, FolderModel folder, RepositoryModel repository)
+        {
+            var docs = new List<DocumentModel>();
+            foreach (DocumentEventopeModel item in data.Documento)
+            {
+                docs.Add(new DocumentModel
+                {
+                    conteudo = item.Conteudo,
+                    mimeType = item.MimeType,
+                    nomeArquivo = item.NomeArquivo,
+                });
+            }
             var body = new
             {
                 token = Settings.Token,
                 @params = new
                 {
-                    Repositorio = new RepositoryModel
+                    Envelope = new EnvelopeModel
                     {
-                        Usuario = new UserModel
+                        descricao = data.Descricao,
+                        Repositorio = new RepositoryModel
                         {
-                            id = idUser
+                            id = repository.id,
+                            nome = repository.nome,
                         },
-                        nome = repositoryName,
-                        compartilharCriacaoDocs = "S",
-                        compartilharVisualizacaoDocs = "S",
-                        ocultarEmailSignatarios = "N",
-                        opcaoValidCertICP = "S",
-                        opcaoValidDocFoto = "S",
-                        opcaoValidDocSelfie = "S",
-                        opcaoValidTokenSMS = "S",
-                        opcaoValidLogin = "S",
-                        opcaoValidReconhecFacial = "S",
-                        opcaoValidPix = "N",
-                        lembrarAssinPendentes = "N"
+                        Pasta = new FolderModel
+                        {
+                            id = folder.id,
+                        },
+                        mensagem = "Mensagem de abertura",
+                        mensagemObservadores = "mensagem observadores",
+                        /*mensagemNotificacaoSMS = null,
+                        dataExpiracao = null,
+                        horaExpiracao = null,*/
+                        usarOrdem = "S",
+                        ConfigAuxiliar = new
+                        {
+                            documentosComXMLs = "N",
+                            //urlCarimboTempo = null
+                        },
+                        listaDocumentos = docs,
+                        incluirHashTodasPaginas = "S",
+                        permitirDespachos = "S",
+                        ignorarNotificacoes = "N",
+                        ignorarNotificacoesPendentes = "N",
                     }
                 }
             };
@@ -58,16 +78,14 @@ namespace server.Services
             {
                 using var contentStream =
                     await httpResponseMessage.Content.ReadAsStreamAsync();
-                CreateRepositoryResponseModel responseAntiCorruption = await System.Text.Json.JsonSerializer.DeserializeAsync<CreateRepositoryResponseModel>(contentStream);
+                CreateEnvelopeResponseModel responseAntiCorruption = await System.Text.Json.JsonSerializer.DeserializeAsync<CreateEnvelopeResponseModel>(contentStream);
 
-                return new RepositoryModel
+                return new EnvelopeModel
                 {
-                    id = responseAntiCorruption.response.data.idRepositorio,
-                    nome = repositoryName
+                    id = responseAntiCorruption.response.data.idEnvelope
                 };
             }
             throw new System.Exception("Erro ao criar repositorio");
         }
-    
     }
 }

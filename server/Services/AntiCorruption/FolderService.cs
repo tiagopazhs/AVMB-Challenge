@@ -6,7 +6,6 @@ using server.Domain.Interfaces.Service;
 using Newtonsoft.Json;
 using System.Text.Json;
 using server;
-
 namespace server.Services
 {
     public class FolderService : IFolderService
@@ -52,7 +51,7 @@ namespace server.Services
 
                 return new FolderModel
                 {
-                    Id = responseAntiCorruption.response.data.idPasta,
+                    id = responseAntiCorruption.response.data.idPasta,
                     nome = folderName
                 };
             }

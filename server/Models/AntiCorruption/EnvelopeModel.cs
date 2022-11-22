@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+
 namespace server.Models;
 
 public class EnvelopeModel
 {
-    public string Descricao { get; set; }
+    public string id { get; set; }
+    public string descricao { get; set; }
 
     public RepositoryModel Repositorio { get; set; }
 
@@ -22,7 +25,7 @@ public class EnvelopeModel
 
     public ConfigAuxModel ConfigAuxiliar { get; set; }
 
-    public List<DocumentModel> ListaDocumentos { get; set; }
+    public List<DocumentModel> listaDocumentos { get; set; }
 
     public string incluirHashTodasPaginas { get; set; }
 
